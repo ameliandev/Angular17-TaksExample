@@ -1,3 +1,4 @@
+import { TasksService } from '@Services/tasks.service';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -28,6 +29,9 @@ export const routes: Routes = [
       import('@Components/Tasks/task-list/task-list.component').then(
         (mod) => mod.TaskListComponent
       ),
+    resolve: {
+      task: TasksService,
+    },
   },
   {
     path: 'tasks/:id',
@@ -35,6 +39,9 @@ export const routes: Routes = [
       import('@Components/Tasks/task-details/task-details.component').then(
         (mod) => mod.TaskDetailsComponent
       ),
+    resolve: {
+      task: TasksService,
+    },
   },
   {
     path: '',
