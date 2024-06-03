@@ -12,7 +12,7 @@ export class Task {
   id: string;
   title: string;
   description: string;
-  statusId: number;
+  status: number;
   statusName: string | undefined;
   author: string;
   startDate: string;
@@ -22,7 +22,7 @@ export class Task {
     this.id = task?.id ?? undefined;
     this.title = task?.title ?? undefined;
     this.description = task?.description ?? undefined;
-    this.statusId = task?.status ?? undefined;
+    this.status = task?.status ?? undefined;
     this.author = task?.author ?? undefined;
     this.startDate = task?.startDate ?? undefined;
     this.dueDate = task?.dueDate ?? undefined;
@@ -33,7 +33,7 @@ export class Task {
   }
 
   SetStatusName(types: Array<TaskStatus>) {
-    this.statusName = types.find((type) => type.id === this.statusId)?.title;
+    this.statusName = types.find((type) => type.id === this.status)?.title;
   }
 }
 
