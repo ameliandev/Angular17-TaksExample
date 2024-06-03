@@ -1,39 +1,50 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "guid": "f28565dd-5ea4-4646-a938-c2e08424aae7",
-      "title": "Hello World",
+      "id": "f28565dd-5ea4-4646-a938-c2e08424aae7",
+      "title": "Change flowers water",
       "description": "Mi first tasks",
       "status": 0,
+      "startDate": "2024-06-03T13:00:41.651Z",
+      "dueDate": "2024-06-14T13:00:41.651Z",
       "author": "John Doe"
     },
     {
-      "id": 2,
-      "guid": "5b6823bb-050e-4e56-824b-04db439e0983",
-      "title": "Hello World 2",
-      "description": "Mi second tasks",
+      "id": "5b6823bb-050e-4e56-824b-04db439e0983",
+      "title": "Have a look (Sendico)",
+      "description": "Have a look at the Sendico platform for some interesting products",
       "status": 1,
+      "startDate": "2024-06-03T13:00:41.651Z",
+      "dueDate": "2024-06-08T08:00:41.651Z",
+      "author": "John Doe"
+    },
+    {
+      "id": "d5872146-1fa8-4f3a-a31a-f4a6b0b17a67",
+      "title": "Painting the kitchen worktop",
+      "description": "The paint has to be applied now in order to be able to retouch afterwards.",
+      "status": 0,
+      "startDate": "2024-06-03T13:00:41.651Z",
+      "dueDate": "2024-06-08T08:00:41.651Z",
       "author": "John Doe"
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "guid": "bca79d37-8445-44aa-a469-94d99f29a8ac",
       "type": 0,
       "name": "Adrián Melián",
       "avatar": ""
     },
     {
-      "id": 2,
+      "id": "2",
       "guid": "5345a7c0-06cd-46e0-a582-76b942d47531",
       "type": 1,
       "name": "Administrator",
       "avatar": ""
     },
     {
-      "id": 3,
+      "id": "3",
       "guid": "507ac8d3-9ea8-4c0a-aa4d-d1440e83940b",
       "type": 0,
       "name": "John Doe",
@@ -41,16 +52,37 @@
     }
   ],
   "taskStatus": [
-    { "id": 0, "title": "to-do" },
-    { "id": 1, "title": "doing" },
-    { "id": 2, "title": "done" }
+    {
+      "id": "0",
+      "title": "to-do"
+    },
+    {
+      "id": "1",
+      "title": "doing"
+    },
+    {
+      "id": "2",
+      "title": "done"
+    }
   ],
   "userStatus": [
-    { "id": 0, "title": "active" },
-    { "id": 1, "title": "inactive" }
+    {
+      "id": "0",
+      "title": "active"
+    },
+    {
+      "id": "1",
+      "title": "inactive"
+    }
   ],
   "userType": [
-    { "id": 0, "title": "admin" },
-    { "id": 1, "title": "basic" }
+    {
+      "id": "0",
+      "title": "admin"
+    },
+    {
+      "id": "1",
+      "title": "basic"
+    }
   ]
 }
