@@ -22,9 +22,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
+import { SurveyDetailsMode } from 'app/enums/app.enums';
 
 const TASK_ADD_ROUTE = 'tasks-add';
-const TASK_EDIT_ROUTE = 'tasks';
+const TASK_DETAILS_ROUTE = 'tasks';
 
 @Component({
   selector: 'app-task-list',
@@ -97,14 +98,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Event for edit action
-   * @param task Selected task
-   */
-  onEdit(task: Task) {
-    this._router.navigate([`${TASK_EDIT_ROUTE}/${task.id}`]);
-  }
-
-  /**
    * Event for delete action
    * @param task Selected task
    */
@@ -123,8 +116,20 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Event for edit action
+   * @param task Selected task
+   */
+  onEdit(task: Task) {
+    this._router.navigate([
+      `${TASK_DETAILS_ROUTE}/${SurveyDetailsMode.Edit}/${task.id}`,
+    ]);
+  }
+
   onRead(task: Task) {
-    this._router.navigate([`${TASK_EDIT_ROUTE}/${task.id}`]);
+    this._router.navigate([
+      `${TASK_DETAILS_ROUTE}/${SurveyDetailsMode.Read}/${task.id}`,
+    ]);
   }
 
   onShare(task: Task) {}
@@ -133,19 +138,11 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   //#region CRUD
 
-  async update() {
+  async test() {
     await this._taskService
-      .update({
-        id: '3cc50de6-f0ed-4563-b3b0-2843cd88d419',
-        author: 'Lucia Joestar',
-        status: 1,
-        title: 'Test from code v20',
-        description: 'This tasks was created from code v16',
-        startDate: new Date().toISOString(),
-        dueDate: new Date().toISOString(),
-      })
+      .read('d5872146-1fa8-4f3a-a31a-f4a6b0b17a67')
       .then((response) => {
-        this._taskService.loadAll();
+        console.info(response);
       });
   }
 

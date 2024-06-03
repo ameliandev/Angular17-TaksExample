@@ -1,6 +1,40 @@
-<p>task-details works!</p>
-@if (taskId.length > 0) {
-<h3>Loading task with id {{ taskId }}</h3>
-} @else {
-<h3>No task id selected</h3>
+@if (task) {
+<div class="p-8 mt-12 mb-24" style="margin: 0 auto">
+  @switch (mode) { @case (0) {
+  <h1>READ MODE</h1>
+  <mat-card class="task-card mt-12 mb-24">
+    <mat-card-header>
+      <div mat-card-avatar class="task-header-image"></div>
+      <mat-card-title>{{ task.title }}</mat-card-title>
+      <mat-card-subtitle>{{
+        task.startDate | date : "yyyy-MM-dd"
+      }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+      <p class="pt-8">
+        {{ task.description }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions class="mt-12">
+      <button mat-mini-fab color="primary">
+        <mat-icon>share</mat-icon>
+      </button>
+      <!-- <button mat-button color="primary">LIKE</button>
+      <button mat-flat-button color="primary">SHARE</button> -->
+    </mat-card-actions>
+  </mat-card>
+  <div class="mt-12 mb-24">
+    <button mat-raised-button color="primary" [routerLink]="['/tasks']">
+      <mat-icon>arrow_back</mat-icon> Go Back
+    </button>
+  </div>
+  } @case (1) {
+  <h1>EDIT MODE</h1>
+  } }
+</div>
 }
