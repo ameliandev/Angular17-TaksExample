@@ -7,7 +7,7 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,12 @@ export class TasksService extends AppService implements Resolve<any> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.loadAll();
+  }
+
+  async loadAll(): Promise<boolean> {
+    this._tasksList = [];
+
     return new Promise<boolean>((resolve, reject) => {
       Promise.all([this.readTaskStatus()])
         .then(async ([taskStatus]) => {
@@ -46,7 +52,17 @@ export class TasksService extends AppService implements Resolve<any> {
   }
 
   //#region CRUD
-  // create(task: ITask): Promise<Array<Task>> {}
+  async create(task: ITask): Promise<Task> {
+    try {
+      const response = await firstValueFrom(
+        this._httpClient.post<Task>(`${this.GetAPIUrl()}/tasks`, task)
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
   async read(): Promise<Array<Task>> {
     return new Promise((resolve, reject) => {
@@ -61,9 +77,32 @@ export class TasksService extends AppService implements Resolve<any> {
     });
   }
 
-  // update(task: ITask) {}
+  async update(task: ITask): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this._httpClient.put<boolean>(
+          `${this.GetAPIUrl()}/tasks/${task.id}`,
+          task
+        )
+      );
+      return true;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
-  // delete(id: number) {}
+  async delete(id: string): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this._httpClient.delete<boolean>(`${this.GetAPIUrl()}/tasks/${id}`)
+      );
+      return true;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
   //#endregion
 
   //#region EXTRA
