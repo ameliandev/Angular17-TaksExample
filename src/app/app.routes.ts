@@ -1,3 +1,4 @@
+import { DetailsGuard } from '@Guards/details.guard';
 import { TasksService } from '@Services/tasks.service';
 import { Routes } from '@angular/router';
 
@@ -34,14 +35,12 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'tasks/:id',
+    path: 'tasks/:mode/:id',
     loadComponent: () =>
       import('@Components/Tasks/task-details/task-details.component').then(
         (mod) => mod.TaskDetailsComponent
       ),
-    resolve: {
-      task: TasksService,
-    },
+    canActivate: [DetailsGuard],
   },
   {
     path: '',
