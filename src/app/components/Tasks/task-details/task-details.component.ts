@@ -9,14 +9,13 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
   styleUrl: './task-details.component.scss',
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
-  taskId: number = 0;
+  taskId: string = '';
 
   constructor(private _routes: ActivatedRoute) {}
 
   ngOnInit(): void {
     this._routes.params.subscribe((params) => {
-      console.info(params);
-      this.taskId = params['id'] ?? 0;
+      this.taskId = params['id'] ?? '';
     });
   }
 
