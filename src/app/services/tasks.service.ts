@@ -64,14 +64,21 @@ export class TasksService extends AppService implements Resolve<any> {
     }
   }
 
-  async read(): Promise<Array<Task>> {
+  async read(id?: string): Promise<Array<Task>> {
+    this._tasksList = [];
+
     return new Promise((resolve, reject) => {
       this._httpClient
-        .get<Array<Task>>(`${this.GetAPIUrl()}/tasks`)
+        .get<Array<Task>>(`${this.GetAPIUrl()}/tasks/${id ?? ''}`)
         .subscribe((tasks) => {
-          tasks.map((status: Task) => {
-            this._tasksList.push(new Task(status, this._tasksStatusList));
-          });
+          if (Array.isArray(tasks)) {
+            tasks.map((status: Task) => {
+              this._tasksList.push(new Task(status, this._tasksStatusList));
+            });
+          } else {
+            this._tasksList.push(tasks);
+          }
+
           resolve(this._tasksList);
         });
     });
