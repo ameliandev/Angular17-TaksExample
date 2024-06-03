@@ -35,6 +35,61 @@
   </div>
   } @case (1) {
   <h1>EDIT MODE</h1>
-  } }
+  @if (formLoaded) {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    (keydown.enter)="$event.preventDefault()"
+    class="task-card p-12"
+  >
+    <input type="hidden" formControlName="id" />
+    <mat-form-field class="full-width">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for (taskStatus of taskStatusList; track $index) {
+        <mat-option [value]="taskStatus.id">{{ taskStatus.title }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
+        <input
+          matStartDate
+          formControlName="startDate"
+          placeholder="Start date"
+        />
+        <input matEndDate formControlName="dueDate" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+
+      <!-- @if (form.controls.startDate.hasError('matStartDateInvalid')) {
+      <mat-error>Invalid start date</mat-error>
+      } @if (form.controls.dueDate.hasError('matEndDateInvalid')) {
+      <mat-error>Invalid end date</mat-error>
+      } -->
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <div class="p-12">
+      <button mat-flat-button color="primary">SAVE</button>
+    </div>
+  </form>
+
+  } } }
 </div>
 }
