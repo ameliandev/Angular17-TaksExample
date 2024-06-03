@@ -25,7 +25,8 @@
       "@Services/*": ["app/services/*"],
       "@Guards/*": ["app/guards/*"],
       "@Models/*": ["app/models/*"],
-      "@Pipes/*": ["app/pipes/*"]
+      "@Pipes/*": ["app/pipes/*"],
+      "@Utils/*": ["app/utils/*"]
     }
   },
   "angularCompilerOptions": {
