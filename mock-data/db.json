@@ -53,35 +53,35 @@
   ],
   "taskStatus": [
     {
-      "id": "0",
+      "id": 0,
       "title": "to-do"
     },
     {
-      "id": "1",
+      "id": 1,
       "title": "doing"
     },
     {
-      "id": "2",
+      "id": 2,
       "title": "done"
     }
   ],
   "userStatus": [
     {
-      "id": "0",
+      "id": 0,
       "title": "active"
     },
     {
-      "id": "1",
+      "id": 1,
       "title": "inactive"
     }
   ],
   "userType": [
     {
-      "id": "0",
+      "id": 0,
       "title": "admin"
     },
     {
-      "id": "1",
+      "id": 1,
       "title": "basic"
     }
   ]
