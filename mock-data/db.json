@@ -4,9 +4,9 @@
       "id": "f28565dd-5ea4-4646-a938-c2e08424aae7",
       "title": "Change flowers water",
       "description": "I love my flowers so, I would like to take care of them",
-      "status": 2,
-      "startDate": "2024-06-03T13:00:41.651Z",
-      "dueDate": "2024-06-14T13:00:41.651Z",
+      "status": "2",
+      "startDate": "2024-06-17T23:00:00.000Z",
+      "dueDate": "2024-06-20T23:00:00.000Z",
       "author": 1
     },
     {
@@ -53,35 +53,35 @@
   ],
   "taskStatus": [
     {
-      "id": 0,
+      "id": "0",
       "title": "to-do"
     },
     {
-      "id": 1,
+      "id": "1",
       "title": "doing"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "done"
     }
   ],
   "userStatus": [
     {
-      "id": 0,
+      "id": "0",
       "title": "inactive"
     },
     {
-      "id": 1,
+      "id": "1",
       "title": "active"
     }
   ],
   "userType": [
     {
-      "id": 0,
+      "id": "0",
       "title": "admin"
     },
     {
-      "id": 1,
+      "id": "1",
       "title": "basic"
     }
   ]
