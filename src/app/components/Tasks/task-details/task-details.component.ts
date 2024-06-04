@@ -1,14 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Task, TaskStatus } from '@Models/tasks.model';
-import { TasksService } from '@Services/tasks.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Signal,
+  computed,
+  effect,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   ActivatedRoute,
   Router,
   RouterLink,
   RouterOutlet,
-  Routes,
 } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Task, TaskStatus } from '@Models/tasks.model';
+import { TasksService } from '@Services/tasks.service';
+import * as Enums from 'app/enums/app.enums';
+
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +28,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import {
   FormsModule,
   FormBuilder,
@@ -26,11 +36,6 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
-import { TaskDetailsMode } from 'app/enums/app.enums';
-
-const today = new Date();
-const month = today.getMonth();
-const year = today.getFullYear();
 
 @Component({
   selector: 'app-task-details',
@@ -56,11 +61,14 @@ const year = today.getFullYear();
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   taskId: string = '';
-  mode: TaskDetailsMode = 0;
+  mode: Enums.TaskDetailsMode = 0;
   task: Task | undefined = undefined;
-  taskStatusList: Array<TaskStatus>;
+  taskStatusList: Array<TaskStatus> = [];
   form: FormGroup;
   formLoaded: boolean = false;
+  statusSignal: WritableSignal<number | undefined> = signal<number | undefined>(
+    undefined
+  );
 
   constructor(
     private _router: Router,
@@ -69,20 +77,34 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder
   ) {
     this.form = new FormGroup({});
-    this.taskStatusList = [];
+
+    effect(() => {
+      const selectedStatus = this.statusSignal();
+      if (selectedStatus == Enums.TaskStatus.Done) {
+        this.form.get('startDate')?.disable();
+        this.form.get('dueDate')?.disable();
+      } else {
+        this.form.get('startDate')?.enable();
+        this.form.get('dueDate')?.enable();
+      }
+    });
   }
 
   ngOnInit(): void {
     this._activeRoute.params.subscribe(async (params) => {
-      this.taskId = params['id'] ?? '';
-      this.mode = parseInt(params['mode']) ?? 0;
+      try {
+        this.taskId = params['id'] ?? '';
+        this.mode = parseInt(params['mode']) ?? 0;
 
-      await this.setTask();
-      this.taskStatusList = [...(await this.getTaskStatus())];
+        await this.setTask();
+        this.taskStatusList = [...(await this.getTaskStatus())];
 
-      this.setForm();
+        this.setForm();
 
-      this.formLoaded = true;
+        this.formLoaded = true;
+      } catch (error) {
+        this.formLoaded = false;
+      }
     });
 
     this._tasksService.readTaskStatus;
@@ -93,7 +115,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   async onSubmit() {
     const submitAction = [
       {
-        mode: TaskDetailsMode.Edit,
+        mode: Enums.TaskDetailsMode.Edit,
         action: async () => {
           const response = await this._tasksService.update(
             this.form.getRawValue()
@@ -102,13 +124,13 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         },
       },
       {
-        mode: TaskDetailsMode.Read,
+        mode: Enums.TaskDetailsMode.Read,
         action: async () => {
           this._router.navigate(['tasks']);
         },
       },
       {
-        mode: TaskDetailsMode.New,
+        mode: Enums.TaskDetailsMode.New,
         action: async () => {
           const response = await this._tasksService.create(
             this.form.getRawValue()
@@ -138,49 +160,57 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
 
   setForm() {
-    console.info(this.task);
-
     this.form = this._formBuilder.group({
       id: new FormControl(
         {
           value: this.task?.id,
-          disabled: this.mode === TaskDetailsMode.Read,
+          disabled: this.mode === Enums.TaskDetailsMode.Read,
         },
         Validators.required
       ),
       title: new FormControl(
         {
           value: this.task?.title,
-          disabled: this.mode === TaskDetailsMode.Read,
+          disabled: this.mode === Enums.TaskDetailsMode.Read,
         },
         Validators.required
       ),
       description: new FormControl({
         value: this.task?.description,
-        disabled: this.mode === TaskDetailsMode.Read,
+        disabled: this.mode === Enums.TaskDetailsMode.Read,
       }),
       status: new FormControl(
         {
-          value: this.task?.status,
-          disabled: this.mode === TaskDetailsMode.Read,
+          value: this.task?.status.toString(),
+          disabled: this.mode === Enums.TaskDetailsMode.Read,
         },
         Validators.required
       ),
       startDate: new FormControl(
         {
           value: this.task?.startDate,
-          disabled: this.mode === TaskDetailsMode.Read,
+          disabled:
+            this.mode === Enums.TaskDetailsMode.Read ||
+            this.task?.status === Enums.TaskStatus.Done,
         },
         Validators.required
       ),
       dueDate: new FormControl(
         {
           value: this.task?.dueDate,
-          disabled: this.mode === TaskDetailsMode.Read,
+          disabled:
+            this.mode === Enums.TaskDetailsMode.Read ||
+            this.task?.status === Enums.TaskStatus.Done,
         },
         Validators.required
       ),
       author: new FormControl(this.task?.author, Validators.required),
+    });
+
+    this.statusSignal.set(this.task?.status);
+
+    this.form.get('status')?.valueChanges.subscribe((value) => {
+      this.statusSignal.set(value);
     });
   }
 }

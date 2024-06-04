@@ -1,7 +1,12 @@
 @if (task) {
 <div class="p-8 mt-12 mb-24" style="margin: 0 auto">
-  <h1>EDIT MODE</h1>
-  @if (formLoaded) {
+  @switch (mode) { @case (0) {
+  <h1>READ TASK</h1>
+  } @case (1) {
+  <h1>EDIT TASK</h1>
+  } @case (2) {
+  <h1>NEW TASK</h1>
+  } } @if (formLoaded) {
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
@@ -43,32 +48,41 @@
         [for]="picker"
       ></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
-
-      <!-- @if (form.controls.startDate.hasError('matStartDateInvalid')) {
-      <mat-error>Invalid start date</mat-error>
-      } @if (form.controls.dueDate.hasError('matEndDateInvalid')) {
-      <mat-error>Invalid end date</mat-error>
-      } -->
     </mat-form-field>
-    <mat-divider></mat-divider>
-    <div class="p-12">
-      @switch (mode) { @case (0) {
-      <button mat-flat-button color="primary">GO BACK</button>
-      } @case (1) {
-      <button mat-flat-button color="primary" class="mr-12">UPDATE</button>
-      <button mat-flat-button color="primary" (click)="onCancel()">
-        CANCEL
-      </button>
-      } @case (2) {
-      <button mat-flat-button color="primary" class="mr-12">SAVE</button>
-      <button mat-flat-button color="primary" (click)="onCancel()">
-        CANCEL
-      </button>
+    <div class="pt-12 pb-12 mt-8">
+      <mat-divider></mat-divider>
+      <div class="mt-12">
+        @switch (mode) { @case (0) {
+        <button mat-flat-button color="primary">GO BACK</button>
+        } @case (1) {
+        <button
+          mat-flat-button
+          color="primary"
+          class="mr-12"
+          [disabled]="form.invalid"
+        >
+          UPDATE
+        </button>
+        <button mat-flat-button color="primary" (click)="onCancel()">
+          CANCEL
+        </button>
+        } @case (2) {
+        <button
+          mat-flat-button
+          color="primary"
+          class="mr-12"
+          [disabled]="form.invalid"
+        >
+          SAVE
+        </button>
+        <button mat-flat-button color="primary" (click)="onCancel()">
+          CANCEL
+        </button>
 
-      } }
+        } }
+      </div>
     </div>
   </form>
-
   }
 </div>
 }
