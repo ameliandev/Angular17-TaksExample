@@ -118,6 +118,7 @@ export class TasksService extends AppService implements Resolve<any> {
       this._httpClient
         .get<Array<TaskStatus>>(`${this.GetAPIUrl()}/taskStatus`)
         .subscribe((items) => {
+          this._tasksStatusList = [];
           items.map((status: TaskStatus) => {
             this._tasksStatusList.push(new TaskStatus(status));
           });

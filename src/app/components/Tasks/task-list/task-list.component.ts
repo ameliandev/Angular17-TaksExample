@@ -22,7 +22,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
-import { SurveyDetailsMode } from 'app/enums/app.enums';
+import { TaskDetailsMode } from 'app/enums/app.enums';
 
 const TASK_ADD_ROUTE = 'tasks-add';
 const TASK_DETAILS_ROUTE = 'tasks';
@@ -94,7 +94,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
    * Add new task event
    */
   onAddNew() {
-    this._router.navigate([TASK_ADD_ROUTE]);
+    this._router.navigate([`${TASK_DETAILS_ROUTE}/${TaskDetailsMode.New}`]);
   }
 
   /**
@@ -122,13 +122,13 @@ export class TaskListComponent implements OnInit, OnDestroy {
    */
   onEdit(task: Task) {
     this._router.navigate([
-      `${TASK_DETAILS_ROUTE}/${SurveyDetailsMode.Edit}/${task.id}`,
+      `${TASK_DETAILS_ROUTE}/${TaskDetailsMode.Edit}/${task.id}`,
     ]);
   }
 
   onRead(task: Task) {
     this._router.navigate([
-      `${TASK_DETAILS_ROUTE}/${SurveyDetailsMode.Read}/${task.id}`,
+      `${TASK_DETAILS_ROUTE}/${TaskDetailsMode.Read}/${task.id}`,
     ]);
   }
 

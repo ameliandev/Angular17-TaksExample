@@ -2,7 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Task, TaskStatus } from '@Models/tasks.model';
 import { TasksService } from '@Services/tasks.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+  Routes,
+} from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +24,9 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  FormControl,
 } from '@angular/forms';
+import { TaskDetailsMode } from 'app/enums/app.enums';
 
 const today = new Date();
 const month = today.getMonth();
@@ -48,28 +56,29 @@ const year = today.getFullYear();
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   taskId: string = '';
-  mode: number = 0;
+  mode: TaskDetailsMode = 0;
   task: Task | undefined = undefined;
-  taskStatusList: Array<TaskStatus> = [];
+  taskStatusList: Array<TaskStatus>;
   form: FormGroup;
   formLoaded: boolean = false;
 
   constructor(
-    private _routes: ActivatedRoute,
+    private _router: Router,
+    private _activeRoute: ActivatedRoute,
     private _tasksService: TasksService,
     private _formBuilder: FormBuilder
   ) {
     this.form = new FormGroup({});
+    this.taskStatusList = [];
   }
 
   ngOnInit(): void {
-    this._routes.params.subscribe(async (params) => {
+    this._activeRoute.params.subscribe(async (params) => {
       this.taskId = params['id'] ?? '';
       this.mode = parseInt(params['mode']) ?? 0;
 
-      console.info({ id: this.taskId, mode: this.mode });
       await this.setTask();
-      this.taskStatusList = await this.getTaskStatus();
+      this.taskStatusList = [...(await this.getTaskStatus())];
 
       this.setForm();
 
@@ -81,8 +90,39 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  onSubmit() {
-    console.info('SUBMIT');
+  async onSubmit() {
+    const submitAction = [
+      {
+        mode: TaskDetailsMode.Edit,
+        action: async () => {
+          const response = await this._tasksService.update(
+            this.form.getRawValue()
+          );
+          this._router.navigate(['tasks']);
+        },
+      },
+      {
+        mode: TaskDetailsMode.Read,
+        action: async () => {
+          this._router.navigate(['tasks']);
+        },
+      },
+      {
+        mode: TaskDetailsMode.New,
+        action: async () => {
+          const response = await this._tasksService.create(
+            this.form.getRawValue()
+          );
+          this._router.navigate(['tasks']);
+        },
+      },
+    ];
+
+    submitAction.find((action) => action.mode === this.mode)?.action();
+  }
+
+  onCancel() {
+    this._router.navigate(['tasks']);
   }
 
   async setTask() {
@@ -101,12 +141,46 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     console.info(this.task);
 
     this.form = this._formBuilder.group({
-      id: [this.task?.id, Validators.required],
-      title: [this.task?.title, Validators.required],
-      description: [this.task?.description],
-      status: [this.task?.status, Validators.required],
-      startDate: [this.task?.startDate, Validators.required],
-      dueDate: [this.task?.dueDate, Validators.required],
+      id: new FormControl(
+        {
+          value: this.task?.id,
+          disabled: this.mode === TaskDetailsMode.Read,
+        },
+        Validators.required
+      ),
+      title: new FormControl(
+        {
+          value: this.task?.title,
+          disabled: this.mode === TaskDetailsMode.Read,
+        },
+        Validators.required
+      ),
+      description: new FormControl({
+        value: this.task?.description,
+        disabled: this.mode === TaskDetailsMode.Read,
+      }),
+      status: new FormControl(
+        {
+          value: this.task?.status,
+          disabled: this.mode === TaskDetailsMode.Read,
+        },
+        Validators.required
+      ),
+      startDate: new FormControl(
+        {
+          value: this.task?.startDate,
+          disabled: this.mode === TaskDetailsMode.Read,
+        },
+        Validators.required
+      ),
+      dueDate: new FormControl(
+        {
+          value: this.task?.dueDate,
+          disabled: this.mode === TaskDetailsMode.Read,
+        },
+        Validators.required
+      ),
+      author: new FormControl(this.task?.author, Validators.required),
     });
   }
 }
