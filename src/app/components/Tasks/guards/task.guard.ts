@@ -37,11 +37,11 @@ class PermissionsService {
     const taskId = params['id'] ?? undefined;
     const mode = params['mode'] ?? undefined;
 
-    return Guid.isValid(taskId) && !isNaN(mode);
+    return (taskId && Guid.isValid(taskId)) || !isNaN(mode);
   }
 }
 
-export const DetailsGuard: CanActivateFn = (
+export const TaskGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): boolean => {

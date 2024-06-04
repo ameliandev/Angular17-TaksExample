@@ -1,4 +1,4 @@
-import { DetailsGuard } from '@Guards/details.guard';
+import { TaskGuard } from '@Components/Tasks/guards/task.guard';
 import { TasksService } from '@Services/tasks.service';
 import { Routes } from '@angular/router';
 
@@ -18,13 +18,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'tasks-add',
-    loadComponent: () =>
-      import('@Components/Tasks/task-form/task-form.component').then(
-        (mod) => mod.TaskFormComponent
-      ),
-  },
-  {
     path: 'tasks',
     loadComponent: () =>
       import('@Components/Tasks/task-list/task-list.component').then(
@@ -35,12 +28,20 @@ export const routes: Routes = [
     },
   },
   {
+    path: 'tasks/:mode/',
+    loadComponent: () =>
+      import('@Components/Tasks/task-details/task-details.component').then(
+        (mod) => mod.TaskDetailsComponent
+      ),
+    canActivate: [TaskGuard],
+  },
+  {
     path: 'tasks/:mode/:id',
     loadComponent: () =>
       import('@Components/Tasks/task-details/task-details.component').then(
         (mod) => mod.TaskDetailsComponent
       ),
-    canActivate: [DetailsGuard],
+    canActivate: [TaskGuard],
   },
   {
     path: '',
