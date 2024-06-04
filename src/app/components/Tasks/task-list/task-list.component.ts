@@ -23,7 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
-import { TaskDetailsMode } from 'app/enums/app.enums';
+import { DetailsMode } from '../task.enums';
 
 const TASK_ADD_ROUTE = 'tasks-add';
 const TASK_DETAILS_ROUTE = 'tasks';
@@ -97,7 +97,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
    * Add new task event
    */
   onAddNew() {
-    this._router.navigate([`${TASK_DETAILS_ROUTE}/${TaskDetailsMode.New}`]);
+    this._router.navigate([`${TASK_DETAILS_ROUTE}/${DetailsMode.New}`]);
   }
 
   /**
@@ -125,13 +125,13 @@ export class TaskListComponent implements OnInit, OnDestroy {
    */
   onEdit(task: Task) {
     this._router.navigate([
-      `${TASK_DETAILS_ROUTE}/${TaskDetailsMode.Edit}/${task.id}`,
+      `${TASK_DETAILS_ROUTE}/${DetailsMode.Edit}/${task.id}`,
     ]);
   }
 
   onRead(task: Task) {
     this._router.navigate([
-      `${TASK_DETAILS_ROUTE}/${TaskDetailsMode.Read}/${task.id}`,
+      `${TASK_DETAILS_ROUTE}/${DetailsMode.Read}/${task.id}`,
     ]);
   }
 
