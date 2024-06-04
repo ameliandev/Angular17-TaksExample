@@ -13,7 +13,7 @@
       "id": "5b6823bb-050e-4e56-824b-04db439e0983",
       "title": "Have a look (Sendico)",
       "description": "Have a look at the Sendico platform for some interesting products",
-      "status": 1,
+      "status": "1",
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
       "author": 2
