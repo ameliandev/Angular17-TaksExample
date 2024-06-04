@@ -3,11 +3,11 @@
     {
       "id": "f28565dd-5ea4-4646-a938-c2e08424aae7",
       "title": "Change flowers water",
-      "description": "Mi first tasks",
-      "status": 0,
+      "description": "I love my flowers so, I would like to take care of them",
+      "status": 2,
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-14T13:00:41.651Z",
-      "author": "1"
+      "author": 1
     },
     {
       "id": "5b6823bb-050e-4e56-824b-04db439e0983",
@@ -16,7 +16,7 @@
       "status": 1,
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
-      "author": "2"
+      "author": 2
     },
     {
       "id": "d5872146-1fa8-4f3a-a31a-f4a6b0b17a67",
@@ -25,28 +25,28 @@
       "status": 0,
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
-      "author": "1"
+      "author": 1
     }
   ],
   "users": [
     {
-      "id": "1",
-      "guid": "bca79d37-8445-44aa-a469-94d99f29a8ac",
+      "id": "adrianmelian@taskman.com",
       "type": 0,
+      "status": 1,
       "name": "Adrián Melián",
       "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
     },
     {
-      "id": "2",
-      "guid": "5345a7c0-06cd-46e0-a582-76b942d47531",
+      "id": "admin@taskman.com",
       "type": 1,
+      "status": 1,
       "name": "Administrator",
       "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
     },
     {
-      "id": "3",
-      "guid": "507ac8d3-9ea8-4c0a-aa4d-d1440e83940b",
+      "id": "3johndoe@taskman.com",
       "type": 0,
+      "status": 0,
       "name": "John Doe",
       "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
     }
@@ -68,11 +68,11 @@
   "userStatus": [
     {
       "id": 0,
-      "title": "active"
+      "title": "inactive"
     },
     {
       "id": 1,
-      "title": "inactive"
+      "title": "active"
     }
   ],
   "userType": [
