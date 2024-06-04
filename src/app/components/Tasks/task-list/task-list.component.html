@@ -98,18 +98,23 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>ACTIONS</th>
       <td mat-cell *matCellDef="let element">
-        <span (click)="onRead(element)" class="p-8 action"
-          ><mat-icon>visibility</mat-icon></span
+        <span [matMenuTriggerFor]="actions" class="action">
+          <mat-icon>more_vert</mat-icon></span
         >
-        <span (click)="onEdit(element)" class="p-8 action"
-          ><mat-icon>edit</mat-icon></span
-        >
-        <span (click)="onDelete(element)" class="p-8 action"
-          ><mat-icon>delete</mat-icon></span
-        >
-        <!-- <span (click)="onShare(element)" class="p-8 action"
-          ><mat-icon>share</mat-icon></span
-        > -->
+        <!-- <button mat-button color="accent" [matMenuTriggerFor]="actions">
+          <mat-icon>more_vert</mat-icon>
+        </button> -->
+        <mat-menu #actions="matMenu">
+          <button mat-menu-item type="button" (click)="onRead(element)">
+            <mat-icon>visibility</mat-icon> READ
+          </button>
+          <button mat-menu-item type="button" (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon> EDIT
+          </button>
+          <button mat-menu-item type="button" (click)="onDelete(element)">
+            <mat-icon>delete</mat-icon> DELETE
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
 
@@ -117,15 +122,3 @@
     <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
   </table>
 </div>
-
-<!-- <ul>
-  @for (task of taksList; track $index) {
-  <li>
-    <div>
-      <h3>{{ task.title }}</h3>
-      <h4>{{ task.description }}</h4>
-      <hr />
-    </div>
-  </li>
-  }
-</ul> -->

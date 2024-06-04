@@ -22,10 +22,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
 import { DetailsMode } from '../task.enums';
 
-const TASK_ADD_ROUTE = 'tasks-add';
 const TASK_DETAILS_ROUTE = 'tasks';
 
 @Component({
@@ -39,6 +39,7 @@ const TASK_DETAILS_ROUTE = 'tasks';
     MatDialogModule,
     MatButtonModule,
     MatTooltipModule,
+    MatMenuModule,
     MatChipsModule,
     TruncateLengthPipe,
   ],
