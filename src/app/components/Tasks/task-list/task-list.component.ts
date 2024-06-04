@@ -21,6 +21,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
 import { TaskDetailsMode } from 'app/enums/app.enums';
 
@@ -38,6 +39,7 @@ const TASK_DETAILS_ROUTE = 'tasks';
     MatDialogModule,
     MatButtonModule,
     MatTooltipModule,
+    MatChipsModule,
     TruncateLengthPipe,
   ],
   templateUrl: './task-list.component.html',
@@ -54,6 +56,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     'description',
     'start',
     'end',
+    'status',
     'actions',
   ];
 
@@ -168,6 +171,20 @@ export class TaskListComponent implements OnInit, OnDestroy {
           return this.compare(a.title, b.title, isAsc);
         case 'description':
           return this.compare(a.description, b.description, isAsc);
+        case 'start':
+          return this.compare(
+            new Date(a.startDate).getTime(),
+            new Date(b.startDate).getTime(),
+            isAsc
+          );
+        case 'end':
+          return this.compare(
+            new Date(a.dueDate).getTime(),
+            new Date(b.dueDate).getTime(),
+            isAsc
+          );
+        case 'status':
+          return this.compare(a.status, b.status, isAsc);
         default:
           return 0;
       }
