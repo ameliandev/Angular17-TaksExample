@@ -33,7 +33,7 @@ export class Task {
   }
 
   SetStatusName(types: Array<TaskStatus>) {
-    this.statusName = types.find((type) => type.id === this.status)?.title;
+    this.statusName = types.find((type) => type.id == this.status)?.title;
   }
 }
 

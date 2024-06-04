@@ -17,7 +17,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Task, TaskStatus } from '@Models/tasks.model';
 import { TasksService } from '@Services/tasks.service';
-import * as Enums from 'app/enums/app.enums';
+import * as Enums from '../task.enums';
 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
@@ -61,7 +61,7 @@ import {
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   taskId: string = '';
-  mode: Enums.TaskDetailsMode = 0;
+  mode: Enums.DetailsMode = 0;
   task: Task | undefined = undefined;
   taskStatusList: Array<TaskStatus> = [];
   form: FormGroup;
@@ -80,7 +80,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
     effect(() => {
       const selectedStatus = this.statusSignal();
-      if (selectedStatus == Enums.TaskStatus.Done) {
+      if (selectedStatus == Enums.Status.Done) {
         this.form.get('startDate')?.disable();
         this.form.get('dueDate')?.disable();
       } else {
@@ -115,7 +115,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   async onSubmit() {
     const submitAction = [
       {
-        mode: Enums.TaskDetailsMode.Edit,
+        mode: Enums.DetailsMode.Edit,
         action: async () => {
           const response = await this._tasksService.update(
             this.form.getRawValue()
@@ -124,13 +124,13 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         },
       },
       {
-        mode: Enums.TaskDetailsMode.Read,
+        mode: Enums.DetailsMode.Read,
         action: async () => {
           this._router.navigate(['tasks']);
         },
       },
       {
-        mode: Enums.TaskDetailsMode.New,
+        mode: Enums.DetailsMode.New,
         action: async () => {
           const response = await this._tasksService.create(
             this.form.getRawValue()
@@ -164,25 +164,25 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       id: new FormControl(
         {
           value: this.task?.id,
-          disabled: this.mode === Enums.TaskDetailsMode.Read,
+          disabled: this.mode === Enums.DetailsMode.Read,
         },
         Validators.required
       ),
       title: new FormControl(
         {
           value: this.task?.title,
-          disabled: this.mode === Enums.TaskDetailsMode.Read,
+          disabled: this.mode === Enums.DetailsMode.Read,
         },
         Validators.required
       ),
       description: new FormControl({
         value: this.task?.description,
-        disabled: this.mode === Enums.TaskDetailsMode.Read,
+        disabled: this.mode === Enums.DetailsMode.Read,
       }),
       status: new FormControl(
         {
           value: this.task?.status.toString(),
-          disabled: this.mode === Enums.TaskDetailsMode.Read,
+          disabled: this.mode === Enums.DetailsMode.Read,
         },
         Validators.required
       ),
@@ -190,8 +190,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         {
           value: this.task?.startDate,
           disabled:
-            this.mode === Enums.TaskDetailsMode.Read ||
-            this.task?.status === Enums.TaskStatus.Done,
+            this.mode === Enums.DetailsMode.Read ||
+            this.task?.status === Enums.Status.Done,
         },
         Validators.required
       ),
@@ -199,8 +199,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         {
           value: this.task?.dueDate,
           disabled:
-            this.mode === Enums.TaskDetailsMode.Read ||
-            this.task?.status === Enums.TaskStatus.Done,
+            this.mode === Enums.DetailsMode.Read ||
+            this.task?.status === Enums.Status.Done,
         },
         Validators.required
       ),
