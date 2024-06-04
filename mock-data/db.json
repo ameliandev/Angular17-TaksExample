@@ -22,7 +22,7 @@
       "id": "d5872146-1fa8-4f3a-a31a-f4a6b0b17a67",
       "title": "Painting the kitchen worktop",
       "description": "The paint has to be applied now in order to be able to retouch afterwards.",
-      "status": 0,
+      "status": "0",
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
       "author": 1

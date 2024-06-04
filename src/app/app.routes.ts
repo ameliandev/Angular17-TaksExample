@@ -28,7 +28,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'tasks/:mode/',
+    path: 'tasks/:mode',
     loadComponent: () =>
       import('@Components/Tasks/task-details/task-details.component').then(
         (mod) => mod.TaskDetailsComponent
