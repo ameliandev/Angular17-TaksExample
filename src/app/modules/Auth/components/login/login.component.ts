@@ -2,11 +2,12 @@ import { UserAuthService } from '@Modules/Auth/services/user-auth.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { UserDataService } from '../../services/user-data.service';
 import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [MatCardModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

@@ -21,7 +21,6 @@ import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
 import { DetailsMode } from '../../enums/task.enums';
 import { UserDataService } from '@Modules/Auth/services/user-data.service';
 import { UserType } from '@Modules/Auth/enums/user.enums';
-import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 const TASK_DETAILS_ROUTE = 'tasks';
@@ -39,7 +38,6 @@ const TASK_DETAILS_ROUTE = 'tasks';
     MatTooltipModule,
     MatMenuModule,
     MatChipsModule,
-    MatCardModule,
     MatProgressBarModule,
     TruncateLengthPipe,
   ],

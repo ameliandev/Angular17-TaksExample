@@ -38,6 +38,7 @@ import {
 } from '@angular/forms';
 import { Guid } from '@Utils/Guid';
 import { Subject, takeUntil } from 'rxjs';
+import { UserDataService } from '@Modules/Auth/services/user-data.service';
 
 @Component({
   selector: 'app-task-details',
@@ -78,7 +79,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _activeRoute: ActivatedRoute,
     private _tasksService: TasksService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _userDataService: UserDataService
   ) {
     this._unsubscribeAll = new Subject();
     this.form = new FormGroup({});
@@ -259,7 +261,10 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         },
         Validators.required
       ),
-      author: new FormControl(this.task?.author ?? 0, Validators.required),
+      author: new FormControl(
+        this.task?.author ?? this._userDataService.Data?.id,
+        Validators.required
+      ),
     });
 
     this.statusSignal.set(this.task?.status);
