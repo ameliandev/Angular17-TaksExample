@@ -1,47 +1,53 @@
-import { TaskGuard } from '@Components/Tasks/guards/task.guard';
-import { TasksService } from '@Services/tasks.service';
+import { TaskGuard } from '@Modules/Tasks/guards/task.guard';
+import { TasksService } from '@Modules/Tasks/services/tasks.service';
+import { UserDataResolve } from '@Modules/Auth/resolve/user-data.resolve';
 import { Routes } from '@angular/router';
+import { AuthGuard } from '@Modules/Auth/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('@Components/Auth/login/login.component').then(
+      import('@Modules/Auth/components/login/login.component').then(
         (mod) => mod.LoginComponent
       ),
+    resolve: {
+      Users: UserDataResolve,
+    },
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('@Components/Auth/register/register.component').then(
+      import('@Modules/Auth/components/register/register.component').then(
         (mod) => mod.RegisterComponent
       ),
   },
   {
     path: 'tasks',
     loadComponent: () =>
-      import('@Components/Tasks/task-list/task-list.component').then(
+      import('@Modules/Tasks/componets/task-list/task-list.component').then(
         (mod) => mod.TaskListComponent
       ),
     resolve: {
       task: TasksService,
     },
+    canActivate: [AuthGuard],
   },
   {
     path: 'tasks/:mode',
     loadComponent: () =>
-      import('@Components/Tasks/task-details/task-details.component').then(
-        (mod) => mod.TaskDetailsComponent
-      ),
-    canActivate: [TaskGuard],
+      import(
+        '@Modules/Tasks/componets/task-details/task-details.component'
+      ).then((mod) => mod.TaskDetailsComponent),
+    canActivate: [AuthGuard, TaskGuard],
   },
   {
     path: 'tasks/:mode/:id',
     loadComponent: () =>
-      import('@Components/Tasks/task-details/task-details.component').then(
-        (mod) => mod.TaskDetailsComponent
-      ),
-    canActivate: [TaskGuard],
+      import(
+        '@Modules/Tasks/componets/task-details/task-details.component'
+      ).then((mod) => mod.TaskDetailsComponent),
+    canActivate: [AuthGuard, TaskGuard],
   },
   {
     path: '',

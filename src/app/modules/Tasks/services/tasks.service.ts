@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AppService } from './app.service';
+import { AppService } from '../../../services/app.service';
 import { HttpClient } from '@angular/common/http';
-import { Task, TaskStatus, ITask } from '@Models/tasks.model';
+import { Task, TaskStatus, ITask } from '@Modules/Tasks/models/tasks.model';
 import {
   ActivatedRouteSnapshot,
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { UserDataService } from '@Modules/Auth/services/user-data.service';
+import { UserType } from '@Modules/Auth/enums/user.enums';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,10 @@ export class TasksService extends AppService implements Resolve<any> {
   onTasksLoad: BehaviorSubject<Array<Task>>;
   onTasksConstantsGet: BehaviorSubject<{ statusList: Array<TaskStatus> }>;
 
-  constructor(private _httpClient: HttpClient) {
+  constructor(
+    private _httpClient: HttpClient,
+    private _userData: UserDataService
+  ) {
     super(_httpClient, 'tasks');
 
     this.onTasksLoad = new BehaviorSubject<Array<Task>>([]);
@@ -67,20 +72,32 @@ export class TasksService extends AppService implements Resolve<any> {
   async read(id?: string): Promise<Array<Task>> {
     this._tasksList = [];
 
-    return new Promise((resolve, reject) => {
-      this._httpClient
-        .get<Array<Task>>(`${this.GetAPIUrl()}/tasks/${id ?? ''}`)
-        .subscribe((tasks) => {
-          if (Array.isArray(tasks)) {
-            tasks.map((status: Task) => {
-              this._tasksList.push(new Task(status, this._tasksStatusList));
-            });
-          } else {
-            this._tasksList.push(tasks);
-          }
+    const url = (() => {
+      switch (Number(this._userData.Data?.type)) {
+        case UserType.Admin:
+          return `${this.GetAPIUrl()}/tasks${id ? `?id=${id}` : ''}`;
+        case UserType.Basic:
+          return `${this.GetAPIUrl()}/tasks?author=${
+            this._userData.Data?.id ?? ''
+          }${id ? `&id=${id}` : ''}`;
+        default:
+          throw new Error('Impossible to generate Tasks url');
+      }
+    })();
 
-          resolve(this._tasksList);
-        });
+    console.info('URL', url);
+    return new Promise((resolve, reject) => {
+      this._httpClient.get<Array<Task>>(url).subscribe((tasks) => {
+        if (Array.isArray(tasks)) {
+          tasks.map((status: Task) => {
+            this._tasksList.push(new Task(status, this._tasksStatusList));
+          });
+        } else {
+          this._tasksList.push(tasks);
+        }
+
+        resolve(this._tasksList);
+      });
     });
   }
 

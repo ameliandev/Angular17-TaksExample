@@ -9,17 +9,22 @@ export class AppService {
   private _http: HttpClient | undefined;
   private _headers: HttpHeaders | undefined;
   private _params: HttpParams | undefined;
-  private _controller: string | undefined;
+  protected _controller: string | undefined;
 
   constructor(http: HttpClient, controller: string) {
     this._http = http;
+    this._controller = controller;
+  }
+
+  protected get Controller(): string {
+    return this._controller ?? '';
   }
 
   /**
    * Gets the API url based on environment
    * @returns the URN API as string
    */
-  public GetAPIUrl(): string {
+  protected GetAPIUrl(): string {
     return environment.apiUrl;
   }
 }

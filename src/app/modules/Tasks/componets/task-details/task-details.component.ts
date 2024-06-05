@@ -15,9 +15,9 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Task, TaskStatus } from '@Models/tasks.model';
-import { TasksService } from '@Services/tasks.service';
-import * as Enums from '../task.enums';
+import { Task, TaskStatus } from '@Modules/Tasks/models/tasks.model';
+import { TasksService } from '@Modules/Tasks/services/tasks.service';
+import * as Enums from '../../enums/task.enums';
 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';

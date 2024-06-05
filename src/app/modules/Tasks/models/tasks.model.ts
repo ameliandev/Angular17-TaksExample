@@ -17,6 +17,9 @@ export class Task {
   author: string;
   startDate: string;
   dueDate: string;
+  userName: string | undefined;
+  userAvatar: string | undefined;
+  canModify: boolean = true;
 
   constructor(task: any, types?: Array<TaskStatus>) {
     this.id = task?.id ?? undefined;

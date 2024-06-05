@@ -7,7 +7,7 @@
       "status": "2",
       "startDate": "2024-06-17T23:00:00.000Z",
       "dueDate": "2024-06-20T23:00:00.000Z",
-      "author": "1"
+      "author": "adrianmelian@taskman.com"
     },
     {
       "id": "5b6823bb-050e-4e56-824b-04db439e0983",
@@ -16,7 +16,7 @@
       "status": "1",
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
-      "author": "2"
+      "author": "adrianmelian@taskman.com"
     },
     {
       "id": "d5872146-1fa8-4f3a-a31a-f4a6b0b17a67",
@@ -25,30 +25,53 @@
       "status": "0",
       "startDate": "2024-06-03T13:00:41.651Z",
       "dueDate": "2024-06-08T08:00:41.651Z",
-      "author": "1"
+      "author": "johndoe@taskman.com"
+    },
+    {
+      "id": "0235a703-6c05-42eb-98ae-eee6e4ba308b",
+      "title": "Dynamic Background Image in Angular Component",
+      "description": "Implement functionality to dynamically set a background image in an Angular component using the [style] directive. Create a variable in the component for the image URL and update the background-image style based on this variable. Include a button in the template to change the image URL, ensuring the style updates correctly.",
+      "status": "0",
+      "startDate": "2024-07-01T23:00:00.000Z",
+      "dueDate": "2024-07-29T23:00:00.000Z",
+      "author": "admin@taskman.com"
     }
   ],
-  "users": [
+  "userData": [
     {
       "id": "adrianmelian@taskman.com",
       "type": "0",
       "status": "1",
       "name": "Adrián Melián",
-      "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
+      "avatar": "https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_25.png"
     },
     {
       "id": "admin@taskman.com",
       "type": "1",
       "status": "1",
       "name": "Administrator",
-      "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
+      "avatar": "https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_1.png"
     },
     {
-      "id": "3johndoe@taskman.com",
+      "id": "johndoe@taskman.com",
       "type": "0",
       "status": "0",
       "name": "John Doe",
-      "avatar": "https://material.angular.io/assets/img/examples/shiba2.jpg"
+      "avatar": "https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_8.png"
+    }
+  ],
+  "userAuth": [
+    {
+      "id": "adrianmelian@taskman.com",
+      "password": "Ma-9E+p3TB=qQXLR{wjW;Y"
+    },
+    {
+      "id": "admin@taskman.com",
+      "password": "sL)bA=.RU!t62D$Hz`SP9w"
+    },
+    {
+      "id": "3johndoe@taskman.com",
+      "password": "c2g!`+BVLh/K%3}X5d,mA"
     }
   ],
   "taskStatus": [

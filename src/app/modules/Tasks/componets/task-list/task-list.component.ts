@@ -1,15 +1,9 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  OnDestroy,
-  OnInit,
-  Inject,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject, skip, takeUntil } from 'rxjs';
-import { Task, TaskStatus } from '@Models/tasks.model';
-import { TasksService } from '@Services/tasks.service';
+import { Task, TaskStatus } from '@Modules/Tasks/models/tasks.model';
+import { TasksService } from '@Modules/Tasks/services/tasks.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, Sort } from '@angular/material/sort';
@@ -24,7 +18,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { TruncateLengthPipe } from '@Pipes/truncate-length.pipe';
-import { DetailsMode } from '../task.enums';
+import { DetailsMode } from '../../enums/task.enums';
+import { UserDataService } from '@Modules/Auth/services/user-data.service';
+import { UserType } from '@Modules/Auth/enums/user.enums';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 const TASK_DETAILS_ROUTE = 'tasks';
 
@@ -41,6 +39,8 @@ const TASK_DETAILS_ROUTE = 'tasks';
     MatTooltipModule,
     MatMenuModule,
     MatChipsModule,
+    MatCardModule,
+    MatProgressBarModule,
     TruncateLengthPipe,
   ],
   templateUrl: './task-list.component.html',
@@ -52,19 +52,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
   statusList: Array<TaskStatus> = [];
   taksList: Array<Task> = [];
   sourceData: MatTableDataSource<Task>;
-  tableColumns: Array<string> = [
-    'title',
-    'description',
-    'start',
-    'end',
-    'status',
-    'actions',
-  ];
+  tableColumns: Array<string> = [];
+  isLoading: boolean = false;
 
   constructor(
     private _taskService: TasksService,
     private _dialog: MatDialog,
-    private _router: Router
+    private _router: Router,
+    private _userData: UserDataService
   ) {
     this._unsubscribeAll = new Subject();
     this.sourceData = new MatTableDataSource<Task>([]);
@@ -72,6 +67,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   //#region ANGULAR EVENTS
   ngOnInit(): void {
+    this.isLoading = true;
+
     this._taskService.onTasksConstantsGet
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((constants: { statusList: Array<TaskStatus> }) => {
@@ -80,9 +77,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
     this._taskService.onTasksLoad
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((tasks: Array<Task>) => {
+      .subscribe(async (tasks: Array<Task>) => {
         this.taksList = tasks;
-        this.sourceData.data = [...tasks];
+        if (this._userData.Users.length === 0) {
+          await this._userData.read();
+        }
+        this.setTableColumns();
+        this.sourceData.data = [...this.taksList];
+        this.isLoading = false;
       });
   }
 
@@ -98,6 +100,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
    * Add new task event
    */
   onAddNew() {
+    this.isLoading = true;
     this._router.navigate([`${TASK_DETAILS_ROUTE}/${DetailsMode.New}`]);
   }
 
@@ -125,12 +128,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
    * @param task Selected task
    */
   onEdit(task: Task) {
+    this.isLoading = true;
     this._router.navigate([
       `${TASK_DETAILS_ROUTE}/${DetailsMode.Edit}/${task.id}`,
     ]);
   }
 
   onRead(task: Task) {
+    this.isLoading = true;
     this._router.navigate([
       `${TASK_DETAILS_ROUTE}/${DetailsMode.Read}/${task.id}`,
     ]);
@@ -158,6 +163,68 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   //#endregion
 
+  //#region SET
+
+  setTableColumns() {
+    switch (Number(this._userData.Data?.type)) {
+      case UserType.Admin:
+        this.tableColumns = [
+          'useravatar',
+          'title',
+          'description',
+          'start',
+          'end',
+          'status',
+          'actions',
+        ];
+
+        this.setDataTableExtraProperties();
+
+        break;
+      case UserType.Basic:
+        this.tableColumns = [
+          'title',
+          'description',
+          'start',
+          'end',
+          'status',
+          'actions',
+        ];
+        break;
+      default:
+        throw new Error('Impossible to generate table columns');
+    }
+  }
+
+  setDataTableExtraProperties() {
+    try {
+      this.taksList = this.taksList.map((task) => {
+        const user = this._userData.Users.find(
+          (user) => user.id === task.author
+        );
+
+        if (!user) {
+          console.error('ExtraProperties: User not found');
+          return task;
+        }
+
+        task.canModify = user.id == this._userData.Data?.id;
+        task.userName = user?.name
+          ? task.author === this._userData.Data?.id
+            ? 'You'
+            : user?.name
+          : 'Unknow user';
+        task.userAvatar = user?.avatar ?? '';
+
+        return task;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //#endregion
+
   sortDataTable(sort: Sort) {
     const data = this.sourceData.data.slice();
     if (!sort.active || sort.direction == '') {
@@ -168,6 +235,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.sourceData.data = data.sort((a, b) => {
       let isAsc = sort.direction == 'asc';
       switch (sort.active) {
+        case 'useravatar':
+          return this.compare(a.author, b.author, isAsc);
         case 'title':
           return this.compare(a.title, b.title, isAsc);
         case 'description':
