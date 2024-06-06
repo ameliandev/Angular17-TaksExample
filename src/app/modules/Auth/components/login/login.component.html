@@ -1,3 +1,4 @@
+@if (formLoaded) {
 <div class="p-8 mt-12 mb-24 w-100-p h-100-p center-wrapper column">
   <form
     [formGroup]="form"
@@ -14,10 +15,21 @@
         <mat-form-field class="w-100-p">
           <mat-label>EMAIL</mat-label>
           <input matInput formControlName="email" />
+          @if (form.controls['email'].hasError('email') &&
+          !form.controls['email'].hasError('required')) {
+          <mat-error>Please enter a valid email address</mat-error>
+          } @if (form.controls['email'].hasError('required')) {
+          <mat-error>Email is <strong>required</strong></mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="w-100-p">
           <mat-label>PASSWORD</mat-label>
-          <input matInput formControlName="password" [autocomplete]="false" />
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            [autocomplete]="false"
+          />
         </mat-form-field>
         <mat-divider></mat-divider>
       </mat-card-content>
@@ -33,3 +45,5 @@
     </mat-card>
   </form>
 </div>
+
+}

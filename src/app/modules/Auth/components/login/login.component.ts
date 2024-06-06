@@ -19,6 +19,8 @@ import {
   ReactiveFormsModule,
   Validators,
   FormControl,
+  FormGroupDirective,
+  NgForm,
 } from '@angular/forms';
 
 @Component({
@@ -43,6 +45,7 @@ import {
 export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoading = false;
+  formLoaded = false;
 
   constructor(
     private authService: UserAuthService,
@@ -54,6 +57,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.userService.Data !== undefined) {
+      this.router.navigate(['tasks']);
+      return;
+    }
+
     this.setForm();
   }
 
@@ -64,38 +72,33 @@ export class LoginComponent implements OnInit {
 
     this.isLoading = true;
 
-    try {
-      if (this.userService.Data !== undefined) {
+    setTimeout(async () => {
+      try {
+        const email = this.form.get('email')?.value;
+        const pass = this.form.get('password')?.value;
+
+        this.formLoaded = false;
+        const result = await this.authService.Login(email, pass);
+
+        if (!result) {
+          return;
+        }
+
+        const data = await this.userService.read(email);
+
+        if (!data) {
+          return;
+        }
+
+        this.userService.Data = data.pop();
+        await this.userService.read();
+        this.isLoading = false;
         this.router.navigate(['tasks']);
-        return;
+      } catch (error) {
+        this.isLoading = false;
+        this.formLoaded = true;
       }
-
-      const email = this.form.get('email')?.value; // 'admin@taskman.com';
-      const pass = this.form.get('password')?.value; //'sL)bA=.RU!t62D$Hz`SP9w';
-
-      // const email = 'adrianmelian@taskman.com';
-      // const pass = 'Ma-9E+p3TB=qQXLR{wjW;Y';
-
-      const result = await this.authService.Login(email, pass);
-
-      if (!result) {
-        return;
-      }
-
-      const data = await this.userService.read(email);
-
-      if (!data) {
-        return;
-      }
-
-      this.userService.Data = data.pop();
-      await this.userService.read();
-      this.isLoading = false;
-
-      this.router.navigate(['tasks']);
-    } catch (error) {
-      this.isLoading = false;
-    }
+    }, 1500);
   }
 
   /**
@@ -103,8 +106,10 @@ export class LoginComponent implements OnInit {
    */
   setForm() {
     this.form = this._formBuilder.group({
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
     });
+
+    this.formLoaded = true;
   }
 }
