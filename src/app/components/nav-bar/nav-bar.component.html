@@ -1,8 +1,8 @@
-@if (visible) {
-<div class="w-100-p flex column p-12 nav-wrapper">
-  <div class="w-100-p flex row-wrap align-end-end">
+@if (!visible) {
+<div class="w-100-p flex fxLayoutColumn p-12 nav-wrapper">
+  <div class="w-100-p flex fxLayoutRowWrap">
     <div class="w-80-p"><h2 class="p-0 m-0">Taskman</h2></div>
-    <div class="profile flex row-wrap w-20-p pr-12">
+    <div class="profile flex fxLayoutRowWrap w-20-p pr-12">
       <div class="w-50-p profile--name">
         <span
           ><strong>{{ _userData?.name }}</strong></span

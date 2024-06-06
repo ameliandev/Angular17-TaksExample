@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "styles/spacing.scss";
 @import "styles/lengths.scss";
+@import "styles/vars.scss";
 
 html,
 body {
   height: 100%;
-  background-color: #c2c03a;
+  background-color: $main-background-color;
 }
 body {
   margin: 0;
@@ -16,12 +17,18 @@ body {
   cursor: pointer;
 }
 
-.center-wrapper {
+.avatar {
+  background-size: cover;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.fxFlex {
   display: flex;
   flex-wrap: nowrap;
   align-content: space-between;
-  justify-content: center;
-  align-items: center;
 }
 
 .flex {
@@ -30,38 +37,21 @@ body {
   align-content: space-between;
 }
 
-.row-wrap {
+.fxLayoutRowWrap {
   flex-direction: row wrap;
 }
-.column {
+.fxLayoutColumn {
   flex-direction: column;
 }
-
-.align-start {
+.fxLayoutAlignCenter {
+  justify-content: center;
+  align-items: center;
+}
+.fxLayoutAlignStartCenter {
   justify-content: start;
-  align-items: start;
+  align-items: center;
 }
-.align-start-center {
-  justify-content: start center;
-  align-items: start center;
-}
-
-.align-center-center {
-  justify-content: center center;
-  align-items: center center;
-}
-
-.align-center-start {
-  justify-content: center start;
-  align-items: center start;
-}
-
-.align-end {
-  justify-content: end;
-  align-items: end;
-}
-
-.align-end-end {
-  justify-content: end end;
-  align-items: end end;
+.fxLayoutAlignEndCenter {
+  place-content: end center;
+  align-items: center;
 }

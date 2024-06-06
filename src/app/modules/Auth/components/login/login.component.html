@@ -1,12 +1,14 @@
 @if (formLoaded) {
-<div class="p-8 mt-12 mb-24 w-100-p h-100-p center-wrapper column">
+<div
+  class="p-8 mt-12 mb-24 w-100-p h-100-p fxFlex fxLayoutColumn fxLayoutAlignCenter"
+>
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"
     (keydown.enter)="$event.preventDefault()"
     class="w-40-p"
   >
-    <mat-card class="login-card w-100-p">
+    <mat-card class="w-100-p">
       <mat-card-header>
         <mat-card-subtitle>User Loggin</mat-card-subtitle>
         <mat-card-title>Welcome to Taskman</mat-card-title>
@@ -35,7 +37,6 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-button mat-raise-button>LOG IN</button>
-        <!-- <button mat-button>SHARE</button> -->
       </mat-card-actions>
       <mat-card-footer>
         @if (isLoading) {

@@ -1,7 +1,9 @@
+@import "styles/vars.scss";
+
 :host {
   .nav-wrapper {
-    background-color: #424242;
-    color: #fff;
+    background-color: $primary-color;
+    color: $white-color;
 
     .profile {
       .profile--name,
@@ -13,13 +15,6 @@
         place-content: end center;
         align-items: center;
       }
-    }
-    .avatar {
-      background-size: cover;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid #fff;
     }
   }
 }

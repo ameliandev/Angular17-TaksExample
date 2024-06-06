@@ -1,5 +1,7 @@
+@import "styles/vars.scss";
+
 :host {
   mat-card-title {
-    color: #fff;
+    color: $white-color;
   }
 }
