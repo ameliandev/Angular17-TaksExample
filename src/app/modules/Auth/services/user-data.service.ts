@@ -23,6 +23,7 @@ export class UserDataService extends AppService {
   private _usersList: Array<UserData> = [];
   private _data: UserData | undefined = undefined;
 
+  onUserDataSet: BehaviorSubject<any>;
   onUsersLoad: BehaviorSubject<Array<UserData>>;
   onUsersConstantsGet: BehaviorSubject<{
     statusList: Array<UserStatus>;
@@ -32,6 +33,7 @@ export class UserDataService extends AppService {
   constructor(private _httpClient: HttpClient, private router: Router) {
     super(_httpClient, 'userData');
 
+    this.onUserDataSet = new BehaviorSubject<any>(undefined);
     this.onUsersLoad = new BehaviorSubject<Array<UserData>>([]);
     this.onUsersConstantsGet = new BehaviorSubject<{
       statusList: Array<UserStatus>;
@@ -53,6 +55,8 @@ export class UserDataService extends AppService {
     } catch (error) {
       this.router.navigate(['login']);
     }
+
+    this.onUserDataSet.next(this._data);
 
     return this._data;
   }
