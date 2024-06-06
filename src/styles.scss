@@ -14,16 +14,50 @@ body {
 
 .center-wrapper {
   display: flex;
-  
   flex-wrap: nowrap;
   align-content: space-between;
   justify-content: center;
   align-items: center;
 }
 
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: space-between;
+}
+
 .row-wrap {
   flex-direction: row wrap;
 }
 .column {
-flex-direction: column;
+  flex-direction: column;
+}
+
+.align-start {
+  justify-content: start;
+  align-items: start;
+}
+.align-start-center {
+  justify-content: start center;
+  align-items: start center;
+}
+
+.align-center-center {
+  justify-content: center center;
+  align-items: center center;
+}
+
+.align-center-start {
+  justify-content: center start;
+  align-items: center start;
+}
+
+.align-end {
+  justify-content: end;
+  align-items: end;
+}
+
+.align-end-end {
+  justify-content: end end;
+  align-items: end end;
 }

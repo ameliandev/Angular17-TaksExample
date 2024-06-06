@@ -1,1 +1,21 @@
-<div class="w-100-p" style="height: 100px"></div>
+@if (visible) {
+<div class="w-100-p flex column p-12 nav-wrapper">
+  <div class="w-100-p flex row-wrap align-end-end">
+    <div class="w-80-p"><h2 class="p-0 m-0">Taskman</h2></div>
+    <div class="profile flex row-wrap w-20-p pr-12">
+      <div class="w-50-p profile--name">
+        <span
+          ><strong>{{ _userData?.name }}</strong></span
+        >
+      </div>
+      <div class="w-50-p profile--avatar">
+        <div
+          class="avatar"
+          [style.background-image]="'url(' + _userData?.avatar + ')'"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+}
