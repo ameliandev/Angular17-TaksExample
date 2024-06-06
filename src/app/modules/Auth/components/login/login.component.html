@@ -34,9 +34,16 @@
           />
         </mat-form-field>
         <mat-divider></mat-divider>
+        @if (loginResponse.length > 0) {
+        <mat-error class="pt-8"
+          ><strong>{{ loginResponse }}</strong></mat-error
+        >
+        }
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button mat-raise-button>LOG IN</button>
+        <button mat-button mat-raise-button [disabled]="form.invalid">
+          LOG IN
+        </button>
       </mat-card-actions>
       <mat-card-footer>
         @if (isLoading) {

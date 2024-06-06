@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoading = false;
   formLoaded = false;
+  loginResponse: string = '';
 
   constructor(
     private authService: UserAuthService,
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.loginResponse = '';
     this.isLoading = true;
 
     setTimeout(async () => {
@@ -81,6 +83,9 @@ export class LoginComponent implements OnInit {
         const result = await this.authService.Login(email, pass);
 
         if (!result) {
+          this.formLoaded = true;
+          this.isLoading = false;
+          this.loginResponse = 'Wrong user';
           return;
         }
 

@@ -1,26 +1,35 @@
-@if (!visible) {
-<div class="w-100-p flex fxLayoutColumn p-12 nav-wrapper">
-  <div class="w-100-p flex fxLayoutRowWrap">
-    <div class="w-80-p"><h2 class="p-0 m-0">Taskman</h2></div>
-    <div class="profile flex fxLayoutRowWrap w-20-p pr-12">
-      <div class="w-50-p profile--name">
-        <span
-          ><strong>{{ _userData?.name }}</strong></span
-        >
-      </div>
-      <div class="w-50-p profile--avatar">
-        <div
-          class="avatar"
-          [style.background-image]="'url(' + _userData?.avatar + ')'"
-        ></div>
-      </div>
-      <div class="w-50-p mt-8 ml-12">
-        <span class="action" (click)="onLogout()"
-          ><mat-icon>logout</mat-icon></span
-        >
-      </div>
+@if (visible) {
+<div fxLayout="row wrap" fxLayoutAlign="start center" class="nav-wrapper p-12">
+  <div fxFlex.gt-sm="60" fxFlex.lt-md="50">
+    <h2 class="p-0 m-0">Taskman</h2>
+  </div>
+  <div
+    fxLayout="row"
+    fxFlex.gt-sm="40"
+    fxFlex.lt-md="50"
+    fxLayoutAlign="end center"
+  >
+    <div
+      fxFlex="80"
+      fxLayoutAlign="end center"
+      fxHide.lt-md="true"
+      class="pr-12"
+    >
+      <span
+        ><strong>{{ _userData?.name }}</strong></span
+      >
+    </div>
+    <div fxFlex.gt-sm="10" fxFlex.lt-md="25" fxLayoutAlign="end center">
+      <div
+        class="avatar"
+        [style.background-image]="'url(' + _userData?.avatar + ')'"
+      ></div>
+    </div>
+    <div fxFlex.gt-sm="10" fxFlex.lt-md="25" fxLayoutAlign="end center">
+      <span class="action" (click)="onLogout()"
+        ><mat-icon>logout</mat-icon></span
+      >
     </div>
   </div>
 </div>
-
 }

@@ -4,10 +4,12 @@ import { UserDataService } from '@Modules/Auth/services/user-data.service';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, FlexLayoutModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })

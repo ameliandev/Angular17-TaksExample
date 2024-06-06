@@ -67,23 +67,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this._taskService.onTasksConstantsGet
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((constants: { statusList: Array<TaskStatus> }) => {
-        this.statusList = constants.statusList;
-      });
+    setTimeout(() => {
+      this._taskService.onTasksConstantsGet
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((constants: { statusList: Array<TaskStatus> }) => {
+          this.statusList = constants.statusList;
+        });
 
-    this._taskService.onTasksLoad
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(async (tasks: Array<Task>) => {
-        this.taksList = tasks;
-        if (this._userData.Users.length === 0) {
-          await this._userData.read();
-        }
-        this.setTableColumns();
-        this.sourceData.data = [...this.taksList];
-        this.isLoading = false;
-      });
+      this._taskService.onTasksLoad
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(async (tasks: Array<Task>) => {
+          this.taksList = tasks;
+          if (this._userData.Users.length === 0) {
+            await this._userData.read();
+          }
+          this.setTableColumns();
+          this.sourceData.data = [...this.taksList];
+          this.isLoading = false;
+        });
+    }, 1000);
   }
 
   ngOnDestroy(): void {
