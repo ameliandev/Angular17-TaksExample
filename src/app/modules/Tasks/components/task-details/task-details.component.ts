@@ -66,7 +66,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any>;
 
   taskId: string = '';
-  mode: Enums.DetailsMode = 0;
+  mode: number = -1;
   task: Task | undefined;
   taskStatusList: Array<TaskStatus> = [];
   form: FormGroup;
@@ -74,6 +74,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   statusSignal: WritableSignal<number | undefined> = signal<number | undefined>(
     undefined
   );
+  disableDates: Signal<boolean> = computed(() => {
+    return this.statusSignal() == Enums.Status.Done;
+  });
 
   constructor(
     private _router: Router,
@@ -85,24 +88,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     this._unsubscribeAll = new Subject();
     this.form = new FormGroup({});
     this.task = undefined;
-
-    effect(() => {
-      this.effectOnStatus();
-    });
-  }
-
-  /**
-   * Signal : Evaluate if the dates controls must be enable or disabled (depending of Status field)
-   */
-  effectOnStatus() {
-    const selectedStatus = this.statusSignal();
-    if (selectedStatus == Enums.Status.Done) {
-      this.form.get('startDate')?.disable();
-      this.form.get('dueDate')?.disable();
-    } else {
-      this.form.get('startDate')?.enable();
-      this.form.get('dueDate')?.enable();
-    }
   }
 
   //#region ANGULAR EVENTS
@@ -243,24 +228,24 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         },
         Validators.required
       ),
-      startDate: new FormControl(
+      startDate: [
         {
           value: this.task?.startDate ?? '',
           disabled:
             this.mode === Enums.DetailsMode.Read ||
             this.task?.status === Enums.Status.Done,
         },
-        Validators.required
-      ),
-      dueDate: new FormControl(
+        Validators.required,
+      ],
+      dueDate: [
         {
           value: this.task?.dueDate ?? '',
           disabled:
             this.mode === Enums.DetailsMode.Read ||
             this.task?.status === Enums.Status.Done,
         },
-        Validators.required
-      ),
+        Validators.required,
+      ],
       author: new FormControl(
         this.task?.author ?? this._userDataService.Data?.id,
         Validators.required

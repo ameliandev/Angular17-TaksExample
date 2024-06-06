@@ -38,8 +38,14 @@
           matStartDate
           formControlName="startDate"
           placeholder="Start date"
+          [disabled]="disableDates()"
         />
-        <input matEndDate formControlName="dueDate" placeholder="End date" />
+        <input
+          matEndDate
+          formControlName="dueDate"
+          placeholder="End date"
+          [disabled]="disableDates()"
+        />
       </mat-date-range-input>
       <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle
