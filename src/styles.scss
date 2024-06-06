@@ -14,9 +14,16 @@ body {
 
 .center-wrapper {
   display: flex;
-  flex-direction: column;
+  
   flex-wrap: nowrap;
   align-content: space-between;
   justify-content: center;
   align-items: center;
+}
+
+.row-wrap {
+  flex-direction: row wrap;
+}
+.column {
+flex-direction: column;
 }
