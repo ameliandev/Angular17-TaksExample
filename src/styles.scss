@@ -1,11 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 @import "styles/spacing.scss";
+@import "styles/lengths.scss";
 
 html,
 body {
   height: 100%;
+  background-color: #c2c03a;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.center-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: space-between;
+  justify-content: center;
+  align-items: center;
 }

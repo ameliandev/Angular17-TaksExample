@@ -1,4 +1,4 @@
-<div class="p-8 mt-12 mb-24" style="margin: 0 auto">
+<div class="p-8 mt-12 mb-24" class="w-100-p h-100-p center-wrapper">
   @switch (mode) { @case (0) {
   <h1>READ TASK</h1>
   } @case (1) {
@@ -6,8 +6,6 @@
   } @case (2) {
   <h1>NEW TASK</h1>
   } } @if (formLoaded) {
-
-  <span>INVALID?: {{ form.invalid }}</span>
   <form
     [formGroup]="form"
     (ngSubmit)="onSubmit()"

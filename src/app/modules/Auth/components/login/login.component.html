@@ -1,1 +1,35 @@
-<div class="p-8 mt-12 mb-24"></div>
+<div class="p-8 mt-12 mb-24 w-100-p h-100-p center-wrapper">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    (keydown.enter)="$event.preventDefault()"
+    class="w-40-p"
+  >
+    <mat-card class="login-card w-100-p">
+      <mat-card-header>
+        <mat-card-subtitle>User Loggin</mat-card-subtitle>
+        <mat-card-title>Welcome to Taskman</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="mt-24 mb-24">
+        <mat-form-field class="w-100-p">
+          <mat-label>EMAIL</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+        <mat-form-field class="w-100-p">
+          <mat-label>PASSWORD</mat-label>
+          <input matInput formControlName="password" [autocomplete]="false" />
+        </mat-form-field>
+        <mat-divider></mat-divider>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button mat-raise-button>LOG IN</button>
+        <!-- <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+      <mat-card-footer>
+        @if (isLoading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      </mat-card-footer>
+    </mat-card>
+  </form>
+</div>
