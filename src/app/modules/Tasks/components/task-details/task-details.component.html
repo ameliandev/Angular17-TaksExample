@@ -13,16 +13,16 @@
     class="task-card p-12"
   >
     <input type="hidden" formControlName="id" />
-    <mat-form-field class="full-width">
+    <mat-form-field class="w-100-p">
       <mat-label>Título</mat-label>
       <input matInput formControlName="title" />
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field class="w-100-p">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="w-100-p">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
         @for (taskStatus of taskStatusList; track $index) {
@@ -31,7 +31,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
+    <mat-form-field class="w-100-p">
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
         <input
