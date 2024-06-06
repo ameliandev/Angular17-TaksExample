@@ -25,7 +25,7 @@ export const routes: Routes = [
   {
     path: 'tasks',
     loadComponent: () =>
-      import('@Modules/Tasks/componets/task-list/task-list.component').then(
+      import('@Modules/Tasks/components/task-list/task-list.component').then(
         (mod) => mod.TaskListComponent
       ),
     resolve: {
@@ -37,7 +37,7 @@ export const routes: Routes = [
     path: 'tasks/:mode',
     loadComponent: () =>
       import(
-        '@Modules/Tasks/componets/task-details/task-details.component'
+        '@Modules/Tasks/components/task-details/task-details.component'
       ).then((mod) => mod.TaskDetailsComponent),
     canActivate: [AuthGuard, TaskGuard],
   },
@@ -45,7 +45,7 @@ export const routes: Routes = [
     path: 'tasks/:mode/:id',
     loadComponent: () =>
       import(
-        '@Modules/Tasks/componets/task-details/task-details.component'
+        '@Modules/Tasks/components/task-details/task-details.component'
       ).then((mod) => mod.TaskDetailsComponent),
     canActivate: [AuthGuard, TaskGuard],
   },
