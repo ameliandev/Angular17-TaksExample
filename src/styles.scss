@@ -12,6 +12,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.action {
+  cursor: pointer;
+}
+
 .center-wrapper {
   display: flex;
   flex-wrap: nowrap;
