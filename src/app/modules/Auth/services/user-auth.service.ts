@@ -18,13 +18,25 @@ export class UserAuthService extends AppService {
 
   async Login(email: string, password: string): Promise<boolean> {
     try {
-      const url = `${this.GetAPIUrl()}/${
+      // The request must be divided because json-server doens't allow AND operators, only OR
+      const urlId = `${this.GetAPIUrl()}/${this.Controller}?id=${email}`;
+      const urlPassword = `${this.GetAPIUrl()}/${
         this.Controller
-      }?id=${email}&password=${password}`;
+      }?password=${password}`;
 
-      const auth = await firstValueFrom(this._httpClient.get<UserAuth>(url));
+      const authId = await firstValueFrom(
+        this._httpClient.get<UserAuth>(urlId)
+      );
+      const authPwd = await firstValueFrom(
+        this._httpClient.get<UserAuth>(urlPassword)
+      );
 
-      if (!auth || (Array.isArray(auth) && auth.length === 0)) {
+      if (
+        !authId ||
+        (Array.isArray(authId) && authId.length === 0) ||
+        !authPwd ||
+        (Array.isArray(authPwd) && authPwd.length === 0)
+      ) {
         return false;
       }
 
