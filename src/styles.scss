@@ -17,6 +17,10 @@ body {
   cursor: pointer;
 }
 
+.overflow-x {
+  overflow-x: scroll;
+}
+
 .avatar {
   background-size: cover;
   width: 32px;
