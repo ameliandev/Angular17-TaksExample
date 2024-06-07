@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-
+import { UserData } from '@Modules/Auth/models/user-data.model';
 import {
   FormsModule,
   FormBuilder,
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.userService.Data !== undefined) {
-      this.router.navigate(['tasks']);
+      this.navigateTo('tasks');
       return;
     }
 
@@ -76,34 +76,45 @@ export class LoginComponent implements OnInit {
 
     setTimeout(async () => {
       try {
-        const email = this.form.get('email')?.value;
-        const pass = this.form.get('password')?.value;
+        const loginData = this.getFormData();
 
         this.formLoaded = false;
-        const result = await this.authService.Login(email, pass);
+
+        const result = await this.authService.Login(
+          loginData.email,
+          loginData.password
+        );
 
         if (!result) {
-          this.formLoaded = true;
-          this.isLoading = false;
-          this.loginResponse = 'Wrong user';
+          this.resetForm();
           return;
         }
 
-        const data = await this.userService.read(email);
+        const data = await this.userService.read(loginData.email);
 
         if (!data) {
           return;
         }
 
-        this.userService.Data = data.pop();
-        await this.userService.read();
+        await this.setMainLoginData(data);
         this.isLoading = false;
-        this.router.navigate(['tasks']);
+        this.navigateTo('tasks');
       } catch (error) {
         this.isLoading = false;
         this.formLoaded = true;
       }
     }, 1500);
+  }
+
+  getFormData(): { email: string; password: string } {
+    return {
+      email: this.form.get('email')?.value,
+      password: this.form.get('password')?.value,
+    };
+  }
+
+  navigateTo(path: string) {
+    this.router.navigate([path]);
   }
 
   /**
@@ -116,5 +127,16 @@ export class LoginComponent implements OnInit {
     });
 
     this.formLoaded = true;
+  }
+
+  async setMainLoginData(data: Array<UserData>) {
+    this.userService.Data = data.pop();
+    await this.userService.read();
+  }
+
+  resetForm() {
+    this.formLoaded = true;
+    this.isLoading = false;
+    this.loginResponse = 'Wrong user';
   }
 }
