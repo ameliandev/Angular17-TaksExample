@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppService } from '../../../services/app.service';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { UserAuth } from '@Modules/Auth/models/user-auth.model';
 import { UserDataService } from '@Modules/Auth/services/user-data.service';
 
@@ -24,18 +24,18 @@ export class UserAuthService extends AppService {
         this.Controller
       }?password=${password}`;
 
-      const authId = await firstValueFrom(
-        this._httpClient.get<UserAuth>(urlId)
-      );
-      const authPwd = await firstValueFrom(
-        this._httpClient.get<UserAuth>(urlPassword)
-      );
+      const combinedLoginRequest = forkJoin({
+        authId: this._httpClient.get<UserAuth>(urlId),
+        authPassword: this._httpClient.get<UserAuth>(urlPassword),
+      });
+
+      const result = await firstValueFrom(combinedLoginRequest);
 
       if (
-        !authId ||
-        (Array.isArray(authId) && authId.length === 0) ||
-        !authPwd ||
-        (Array.isArray(authPwd) && authPwd.length === 0)
+        !result.authId ||
+        (Array.isArray(result.authId) && result.authId.length === 0) ||
+        !result.authPassword ||
+        (Array.isArray(result.authPassword) && result.authPassword.length === 0)
       ) {
         return false;
       }
